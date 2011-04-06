@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<h1>{{ title }}</h1>
+
+<p>
+<form action='/sandbox' method='POST'>
+  {{ forms.form_fields(form) }}
+  <fieldset class="submit">
+    <input type="submit" name="submit" value="Create activity!">
+  </fieldset>
+</form>
+</p>
+
+<br/><br/><hr/>
+<h4>Work in progress!</h4>
+<p class="date">5th Mar 2011</p>
+<p>Thanks for testing this project. Return later - more stuff to come.</p>
+{% endblock %}
