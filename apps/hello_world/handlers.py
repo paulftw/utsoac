@@ -9,6 +9,8 @@ from tipfy.ext.jinja2 import Jinja2Mixin
 import forms
 import simplejson
 
+from models import Activity
+
 from tipfy.ext.session import SessionMiddleware, SessionMixin, AllSessionMixins
 from tipfy.ext.auth import MultiAuthMixin, login_required, user_required
 
@@ -46,6 +48,7 @@ class MainPageHandler(BaseHandler):
   def get(self, **kwargs):
     return self.render_response('layout.html')
 
+
 class SandboxHandler(BaseHandler):
   @user_required
   def get(self):
@@ -53,9 +56,20 @@ class SandboxHandler(BaseHandler):
   
   @user_required
   def post(self):
-    if self.form.validate():
+    if not self.form.validate():
       self.set_message('error', 'Invalid activity info. Please fix errors and try again.', life=None)
-    return self.render_response('cabinet.html', title='Please try %s again' % (val), form=self.form)
+      return self.get()
+    activity = Activity(
+        title=self.form.title.data,
+        description=self.form.description.data,
+        date=self.form.date.data,
+        participants=self.form.participants.data,
+
+        owner=self.auth_current_user.username,
+      )
+    self.set_message('success', 'Great activity. Nice try!', life=None)
+    return redirect('/')
+    
 
   @cached_property
   def form(self):

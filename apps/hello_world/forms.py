@@ -22,3 +22,4 @@ class NewActivityForm(Form):
   date = fields.DateField('Start date', format='%d/%m/%Y', validators=[REQUIRED])
   description = fields.TextAreaField('Full activity details')
   participants = fields.IntegerField('Participants (including you)', validators=[REQUIRED])
+  instructions_for_joined = fields.TextAreaField('Welcome text (meeting location, payment details, requests for additional info)')
