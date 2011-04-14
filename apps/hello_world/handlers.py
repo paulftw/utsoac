@@ -48,6 +48,10 @@ class MainPageHandler(BaseHandler):
   def get(self, **kwargs):
     return self.render_response('layout.html')
 
+class ActivityListHandler(BaseHandler):
+  def get(self, **kwargs):
+    return self.render_response('activities.html', activities=Activity.all())
+
 
 class SandboxHandler(BaseHandler):
   @user_required
@@ -67,6 +71,7 @@ class SandboxHandler(BaseHandler):
 
         owner=self.auth_current_user.username,
       )
+    activity.put()
     self.set_message('success', 'Great activity. Nice try!', life=None)
     return redirect('/')
     

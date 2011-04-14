@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Upcoming stuff</h1>
+
+  <ul>
+  {% for act in activities %}
+    <li> {{ act.title|e }}  -- {{ act.date }} </li>
+  {% endfor %}
+  </ul>
+
+{% endblock %}
+

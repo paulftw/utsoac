@@ -6,3 +6,7 @@ class Activity(db.Model):
   date = db.DateProperty(auto_now_add = True)
   owner = db.StringProperty(required = True)
   participants = db.IntegerProperty(required = True)
+
+class Join(db.Model):
+  weight = db.IntegerProperty(required = True)
+  
