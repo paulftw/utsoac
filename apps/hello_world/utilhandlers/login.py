@@ -64,7 +64,7 @@ class SignupHandler(BaseHandler):
             # User is already registered, so don't display the signup form.
             return redirect(self.redirect_path())
 
-        return self.render_response('signup.html', form=self.form)
+        return self.render_response('register.html', form=self.form)
 
     @login_required
     def post(self, **kwargs):
