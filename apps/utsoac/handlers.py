@@ -46,7 +46,8 @@ class BaseHandler(RequestHandler, MultiAuthMixin, Jinja2Mixin, AllSessionMixins)
 
 class MainPageHandler(BaseHandler):
   def get(self, **kwargs):
-    return self.render_response('layout.html')
+    return self.render_response('layout.html', 
+        title='UTS Outdoor Activities Club')
 
 class ActivityListHandler(BaseHandler):
   def get(self, **kwargs):
