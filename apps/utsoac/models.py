@@ -16,6 +16,12 @@ class User(TipfyUser):
   firstName = db.StringProperty()
   lastName = db.StringProperty()
   dob = db.DateProperty()
+  health = db.StringProperty()
   lastSignUp = db.DateTimeProperty()
 
-  #end of User properties
+class Address(db.Model):
+  streetAddr = db.StringProperty(required = True)
+  suburb = db.StringProperty(required = True)
+  zipcode = db.StringProperty(required = True)
+  state = db.StringProperty(required = True)
+  country = db.StringProperty(required = True)
