@@ -4,10 +4,10 @@ from tipfy import RequestHandler, Response
 from tipfy.ext.jinja2 import render_response
 from tipfy import (cached_property, redirect, url_for)
 
-import apps.hello_world.forms as forms
+import apps.utsoac.forms as forms
 import simplejson
 
-from apps.hello_world.handlers import BaseHandler
+from apps.utsoac.handlers import BaseHandler
 from tipfy.ext.auth import login_required, user_required
 
 # Login stuff

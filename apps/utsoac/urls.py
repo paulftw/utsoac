@@ -20,14 +20,17 @@ def get_rules(app):
         A list of class:`tipfy.Rule` instances.
     """
     rules = [
-        Rule('/' + page['url'], endpoint='page' + page['url'], handler='apps.hello_world.handlers.' + page['handler'] + 'Handler')
+        Rule(
+            '/' + page['url'],
+             endpoint='page' + page['url'],
+             handler='apps.utsoac.handlers.' + page['handler'] + 'Handler')
         for page in navbar
-        ]
+    ]
     rules.extend([
-        Rule('/auth/login', endpoint='auth/login', handler='apps.hello_world.utilhandlers.login.LoginHandler'),
-        Rule('/auth/logout', endpoint='auth/logout', handler='apps.hello_world.utilhandlers.login.LogoutHandler'),
-        Rule('/auth/signup', endpoint='auth/signup', handler='apps.hello_world.utilhandlers.login.SignupHandler'),
-        Rule('/auth/register', endpoint='auth/register', handler='apps.hello_world.utilhandlers.login.RegisterHandler'),
+        Rule('/auth/login', endpoint='auth/login', handler='apps.utsoac.utilhandlers.login.LoginHandler'),
+        Rule('/auth/logout', endpoint='auth/logout', handler='apps.utsoac.utilhandlers.login.LogoutHandler'),
+        Rule('/auth/signup', endpoint='auth/signup', handler='apps.utsoac.utilhandlers.login.SignupHandler'),
+        Rule('/auth/register', endpoint='auth/register', handler='apps.utsoac.utilhandlers.login.RegisterHandler'),
         ])
         
     return rules
