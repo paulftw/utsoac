@@ -14,11 +14,9 @@ from tipfy.ext.auth import login_required, user_required
 
 class LoginHandler(BaseHandler):
     def get(self, **kwargs):
-        redirect_url = self.redirect_path()
-
         if self.auth_current_user:
             # User is already registered, so don't display the signup form.
-            return redirect(redirect_url)
+            return redirect(self.redirect_path())
 
         opts = {'continue': self.redirect_path()}
         context = {
@@ -27,11 +25,9 @@ class LoginHandler(BaseHandler):
         return self.render_response('login.html', **context)
 
     def post(self, **kwargs):
-        redirect_url = self.redirect_path()
-
         if self.auth_current_user:
             # User is already registered, so don't display the signup form.
-            return redirect(redirect_url)
+            return redirect(self.redirect_path())
 
         if self.form.validate():
             username = self.form.loginid.data
@@ -40,7 +36,7 @@ class LoginHandler(BaseHandler):
 
             res = self.auth_login_with_form(username, password, remember)
             if res:
-                return redirect(redirect_url)
+                return redirect(self.redirect_path())
         # Did not recognize password or whatever.
         self.set_message('error', 'Authentication failed. Please try again.',
             life=None)
