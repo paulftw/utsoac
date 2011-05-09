@@ -53,10 +53,10 @@ class ActivityListHandler(BaseHandler):
     return self.render_response('activities.html', title='Upcoming Activities', activities=Activity.all())
 
 
-class SandboxHandler(BaseHandler):
+class NewActivityHandler(BaseHandler):
   @user_required
   def get(self):
-    return self.render_response('cabinet.html', title='Test Form', form=self.form)
+    return self.render_response('newactivity.html', title='New Activity', form=self.form)
   
   @user_required
   def post(self):
@@ -75,4 +75,6 @@ class SandboxHandler(BaseHandler):
 
   @cached_property
   def form(self):
-    return forms.NewActivityForm(self.request)
+    form = forms.NewActivityForm(self.request)
+    form.contactPhone.data = self.auth_current_user.contactPhone
+    return form

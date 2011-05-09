@@ -40,6 +40,7 @@ class User(TipfyUser):
   lastName = db.StringProperty()
   dob = db.DateProperty()
   health = db.StringProperty()
+  contactPhone = db.StringProperty()
   lastLogin = db.DateTimeProperty()
   
   def loggedIn(self):
