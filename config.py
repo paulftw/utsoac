@@ -23,7 +23,7 @@ config['tipfy'] = {
 }
 
 config['tipfy.ext.session'] = {
-  'secret_key': 'Fu89DDsZXIO',
+  'secret_key': 'oops! that was lame :)',
   'default_backend': 'memcache',
   'max_age': 7 * 24 * 3600,
   'httponly': True,
