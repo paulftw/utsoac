@@ -28,18 +28,23 @@ class LoginHandler(BaseHandler):
         if self.auth_current_user:
             # User is already registered, so don't display the signup form.
             return redirect(self.redirect_path())
+        
 
         if self.form.validate():
-            username = self.form.loginid.data
-            password = self.form.password.data
-            remember = self.form.remember.data
+          email = self.form.loginid.data
+          password = self.form.password.data
+          remember = self.form.remember.data
 
-            res = self.auth_login_with_form(username, password, remember)
-            if res:
-                return redirect(self.redirect_path())
+          res = self.auth_login_with_form(email, password, remember)
+          if res:
+            self.auth_current_user.loggedIn()
+            return redirect(self.redirect_path())
+          else:
+            failReason = 'Invalid e-mail or password'
+        else:
+          failReason = 'Incorrect data entered'
         # Did not recognize password or whatever.
-        self.set_message('error', 'Authentication failed. Please try again.',
-            life=None)
+        self.set_message('error', '%s. Please try again.' % failReason)
         return self.get(**kwargs)
 
     @cached_property
@@ -52,14 +57,13 @@ class LogoutHandler(BaseHandler):
         self.auth_logout()
         return redirect(self.redirect_path())
 
-
+# Signup - register after an OpenID login. Currently inaccessible.
 class SignupHandler(BaseHandler):
     @login_required
     def get(self, **kwargs):
         if self.auth_current_user:
             # User is already registered, so don't display the signup form.
             return redirect(self.redirect_path())
-
         return self.render_response('register.html', form=self.form)
 
     @login_required

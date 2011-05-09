@@ -3,7 +3,7 @@ from tipfy import Rule
 
 navbar = [
   {'url':'', 'name':'home', 'handler':'MainPage'},
-  {'url':'sandbox', 'name':'sandbox', 'handler':'Sandbox'},
+  {'url':'sandbox', 'name':'New Activity', 'handler':'Sandbox'},
   {'url':'activities', 'name':'activities', 'handler':'ActivityList'},
   {'url':'gallery', 'name':'photos', 'handler':'Gallery'},
   {'url':'join', 'name':'join club', 'handler':'JoinForm'},

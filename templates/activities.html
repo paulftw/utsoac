@@ -1,11 +1,19 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <h1>Upcoming stuff</h1>
+  <br/>
+  <br/>
+  <a href='/sandbox'><b>Post a new activity</b></a>
+  <br/>
+  <br/>
+  <h3>Upcoming stuff</h3>
 
   <ul>
   {% for act in activities %}
     <li> {{ act.title|e }}  -- {{ act.date }} </li>
+  {% else %}
+    No activities yet. <br/>
+    Post a new one using the link above!
   {% endfor %}
   </ul>
 

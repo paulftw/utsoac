@@ -46,12 +46,11 @@ class BaseHandler(RequestHandler, MultiAuthMixin, Jinja2Mixin, AllSessionMixins)
 
 class MainPageHandler(BaseHandler):
   def get(self, **kwargs):
-    return self.render_response('layout.html', 
-        title='UTS Outdoor Activities Club')
+    return self.render_response('layout.html', title='UTS Outdoor Activities Club')
 
 class ActivityListHandler(BaseHandler):
   def get(self, **kwargs):
-    return self.render_response('activities.html', activities=Activity.all())
+    return self.render_response('activities.html', title='Upcoming Activities', activities=Activity.all())
 
 
 class SandboxHandler(BaseHandler):
@@ -64,15 +63,12 @@ class SandboxHandler(BaseHandler):
     if not self.form.validate():
       self.set_message('error', 'Invalid activity info. Please fix errors and try again.', life=None)
       return self.get()
-    activity = Activity(
+    Activity.create(author=self.auth_current_user.username,
         title=self.form.title.data,
         description=self.form.description.data,
         date=self.form.date.data,
         participants=self.form.participants.data,
-
-        owner=self.auth_current_user.username,
       )
-    activity.put()
     self.set_message('success', 'Great activity. Nice try!', life=None)
     return redirect('/')
     
