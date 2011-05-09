@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from tipfy import RequestHandler, Response
-from tipfy.ext.jinja2 import render_response
 from tipfy import (cached_property, redirect, url_for)
 
 import apps.utsoac.forms as forms
@@ -17,8 +16,6 @@ class LoginHandler(BaseHandler):
         if self.auth_current_user:
             # User is already registered, so don't display the signup form.
             return redirect(self.redirect_path())
-
-        opts = {'continue': self.redirect_path()}
         context = {
             'form': self.form,
         }
@@ -113,7 +110,6 @@ class RegisterHandler(BaseHandler):
             return redirect(redirect_url)
 
         if self.form.validate():
-            username = self.form.loginid.data
             password = self.form.password.data
             password_confirm = self.form.password_confirm.data
 
@@ -122,16 +118,23 @@ class RegisterHandler(BaseHandler):
                     life=None)
                 return self.get(**kwargs)
 
+            username = self.form.loginid.data
             auth_id = 'own|%s' % username
-            user = self.auth_create_user(username, auth_id, password=password)
+            
+            user = self.auth_create_user(username, auth_id, password=password,
+                firstName=self.form.firstName,
+                lastName=self.form.lastName,
+                dob=self.form.dob,
+                health=self.form.health,
+                contactPhone=self.form.contactPhone,
+                )
             if user:
                 self.auth_set_session(user.auth_id, user.session_id, '1')
                 self.set_message('success', 'You are now registered. '
                     'Welcome!', flash=True, life=5)
                 return redirect(redirect_url)
             else:
-                self.set_message('error', 'This nickname is already '
-                    'registered.', life=None)
+                self.set_message('error', 'This e-mail is already registered.')
                 return self.get(**kwargs)
 
         self.set_message('error', 'A problem occurred. Please correct the '

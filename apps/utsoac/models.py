@@ -41,7 +41,7 @@ class User(TipfyUser):
   dob = db.DateProperty()
   health = db.StringProperty()
   contactPhone = db.StringProperty()
-  lastLogin = db.DateTimeProperty()
+  lastLogin = db.DateTimeProperty(auto_now_add = True)
   
   def loggedIn(self):
     self.lastLogin = datetime.now()
