@@ -30,5 +30,5 @@ config['tipfy.ext.session'] = {
 }
 
 config['tipfy.ext.auth'] = {
-  'auth_user_model': 'apps.utsoac.models.User',
+  'user_model': 'apps.utsoac.models.User',
 }

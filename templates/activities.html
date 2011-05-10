@@ -3,14 +3,17 @@
 {% block body %}
   <br/>
   <br/>
-  <a href='/newactivity'><b>Post a new activity</b></a>
+  <a href='/activity'><b>Post a new activity</b></a>
   <br/>
   <br/>
   <h3>Upcoming stuff</h3>
 
   <ul>
   {% for act in activities %}
-    <li> {{ act.title|e }}  -- {{ act.date }} </li>
+    <li>
+      <a href='/activity?activity={{ act.key() }}'>
+        {{ act.title|e }}  on {{ act.date }} by {{ act.owner|e }}</a>
+    </li>
   {% else %}
     No activities yet. <br/>
     Post a new one using the link above!
@@ -18,4 +21,3 @@
   </ul>
 
 {% endblock %}
-

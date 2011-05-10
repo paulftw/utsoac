@@ -3,7 +3,7 @@ from tipfy import Rule
 
 navbar = [
   {'url':'', 'name':'home', 'handler':'MainPage'},
-  {'url':'newactivity', 'name':'New Activity', 'handler':'NewActivity'},
+  {'url':'activity', 'name':'New Activity', 'handler':'NewActivity'},
   {'url':'activities', 'name':'activities', 'handler':'ActivityList'},
   {'url':'gallery', 'name':'photos', 'handler':'Gallery'},
   {'url':'join', 'name':'join club', 'handler':'JoinForm'},
@@ -22,7 +22,7 @@ def get_rules(app):
     rules = [
         Rule(
             '/' + page['url'],
-             endpoint='page' + page['url'],
+             endpoint='page.' + page['url'],
              handler='apps.utsoac.handlers.' + page['handler'] + 'Handler')
         for page in navbar
     ]
@@ -31,6 +31,8 @@ def get_rules(app):
         Rule('/auth/logout', endpoint='auth/logout', handler='apps.utsoac.utilhandlers.login.LogoutHandler'),
         Rule('/auth/signup', endpoint='auth/signup', handler='apps.utsoac.utilhandlers.login.SignupHandler'),
         Rule('/auth/register', endpoint='auth/register', handler='apps.utsoac.utilhandlers.login.RegisterHandler'),
+
+        Rule('/joinactivity', endpoint='page.joinactivity', handler='apps.utsoac.handlers.JoinActivityHandler'),
         ])
         
     return rules

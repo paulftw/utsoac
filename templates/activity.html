@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+{% if action == 'view' or action == 'edit' %}
+  <h1>{{ activity.title|e }}</h1>
+  <h3>on {{ activity.date|e}}</h3>
+  <h3>Description:</h3>
+  <p>{{ activity.description|e }}</p>
+  <hr />
+  <p>
+    <strong>Joined</strong>: {{ participants|length }} of {{ activity.participants|e }}<br />
+    <strong>Participants</strong>: {% for p in participants %} {{ p.screen_name() }}, {% endfor %}<br />
+  </p>
+  <h3><a href='/joinactivity?activity={{ activity.key() }}'>Join the fun!</a></h3>
+  
+  <!-- if edit then display form -->
+{% else %}
+<h3>Create new activity</h3>
+  <p>
+  <form action='/activity' method='POST' enctype="multipart/form-data" class="tipfy-form">
+    {{ forms.form_fields(form) }}
+    <fieldset class="submit">
+      <input type="submit" name="submit" value="Submit!">
+    </fieldset>
+  </form>
+  </p>
+{% endif %}
+
+{% endblock %}

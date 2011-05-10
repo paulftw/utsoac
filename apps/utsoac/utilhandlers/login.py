@@ -4,7 +4,6 @@ from tipfy import RequestHandler, Response
 from tipfy import (cached_property, redirect, url_for)
 
 import apps.utsoac.forms as forms
-import simplejson
 
 from apps.utsoac.handlers import BaseHandler
 from tipfy.ext.auth import login_required, user_required
@@ -12,41 +11,42 @@ from tipfy.ext.auth import login_required, user_required
 # Login stuff
 
 class LoginHandler(BaseHandler):
-    def get(self, **kwargs):
-        if self.auth_current_user:
-            # User is already registered, so don't display the signup form.
-            return redirect(self.redirect_path())
-        context = {
-            'form': self.form,
-        }
-        return self.render_response('login.html', **context)
+  def get(self, **kwargs):
+    if self.auth_current_user:
+      # User is already registered, so don't display the signup form.
+      return redirect(self.redirect_path())
+    context = {
+      'form': self.form,
+    }
+    return self.render_response('login.html', **context)
 
-    def post(self, **kwargs):
-        if self.auth_current_user:
-            # User is already registered, so don't display the signup form.
-            return redirect(self.redirect_path())
-        
+  def post(self, **kwargs):
+    if self.auth_current_user:
+      # User is already registered, so don't display the signup form.
+      return redirect(self.redirect_path())
+    
+    if self.form.validate():
+      email = self.form.loginid.data
+      password = self.form.password.data
+      remember = self.form.remember.data
 
-        if self.form.validate():
-          email = self.form.loginid.data
-          password = self.form.password.data
-          remember = self.form.remember.data
+      res = self.auth_login_with_form(email, password, remember)
+      if res:
+        self.auth_current_user.logged_in()
+        self.set_message('success', 'You are logged in as %s. '
+                    'Welcome!' % self.auth_current_user.screen_name(), flash=True, life=5)
+        return redirect(self.redirect_path())
+      else:
+        failReason = 'Invalid e-mail or password'
+    else:
+      failReason = 'Incorrect data entered'
+    # Did not recognize password or whatever.
+    self.set_message('error', '%s. Please try again.' % failReason, flash=True, life=10)
+    return self.get(**kwargs)
 
-          res = self.auth_login_with_form(email, password, remember)
-          if res:
-            self.auth_current_user.loggedIn()
-            return redirect(self.redirect_path())
-          else:
-            failReason = 'Invalid e-mail or password'
-        else:
-          failReason = 'Incorrect data entered'
-        # Did not recognize password or whatever.
-        self.set_message('error', '%s. Please try again.' % failReason)
-        return self.get(**kwargs)
-
-    @cached_property
-    def form(self):
-        return forms.LoginForm(self.request)
+  @cached_property
+  def form(self):
+      return forms.LoginForm(self.request)
 
 
 class LogoutHandler(BaseHandler):
@@ -121,13 +121,7 @@ class RegisterHandler(BaseHandler):
             username = self.form.loginid.data
             auth_id = 'own|%s' % username
             
-            user = self.auth_create_user(username, auth_id, password=password,
-                firstName=self.form.firstName,
-                lastName=self.form.lastName,
-                dob=self.form.dob,
-                health=self.form.health,
-                contactPhone=self.form.contactPhone,
-                )
+            user = self.auth_create_user(username, auth_id, **self.form.data)
             if user:
                 self.auth_set_session(user.auth_id, user.session_id, '1')
                 self.set_message('success', 'You are now registered. '
