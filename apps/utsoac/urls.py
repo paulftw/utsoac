@@ -5,10 +5,10 @@ navbar = [
   {'url':'', 'name':'home', 'handler':'MainPage'},
   {'url':'activity', 'name':'New Activity', 'handler':'NewActivity'},
   {'url':'activities', 'name':'activities', 'handler':'ActivityList'},
-  {'url':'gallery', 'name':'photos', 'handler':'Gallery'},
-  {'url':'join', 'name':'join club', 'handler':'JoinForm'},
-  {'url':'contact', 'name':'contact\'em', 'handler':'Committee'},
-  {'url':'about', 'name':'about this', 'handler':'StaticPage'},
+#  {'url':'gallery', 'name':'photos', 'handler':'Gallery'},
+#  {'url':'join', 'name':'join club', 'handler':'JoinForm'},
+#  {'url':'contact', 'name':'contact\'em', 'handler':'Committee'},
+#  {'url':'about', 'name':'about this', 'handler':'StaticPage'},
 ]
 
 def get_rules(app):

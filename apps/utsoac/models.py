@@ -1,6 +1,8 @@
 from google.appengine.ext import db
 
 from datetime import datetime
+import math
+import os
 
 from tipfy.ext.auth.model import User as TipfyUser
 
@@ -50,9 +52,8 @@ class Activity(db.Model):
     
         
   def join(self, username, when=datetime.now(), **kwargs):
-    w = when - self.created
-    intW = w.days * 86400 + w.seconds
-    joinRecord = Join(parent=self, key_name=username, weight=intW, **kwargs)
+    w = Join.weight(when - self.created)
+    joinRecord = Join(parent=self, key_name=username, weight=w, **kwargs)
     joinRecord.put()
     return joinRecord
     
@@ -75,4 +76,10 @@ class Join(db.Model):
   car = db.StringProperty()
   comments = db.StringProperty()
   gear = db.StringProperty()
-
+  
+  @classmethod
+  def weight(self, delta):
+    secs = delta.days * 86400 + delta.seconds
+    log = math.ceil(math.log(secs / 4.0 / 3600, 2))
+    return log * 1000 + (ord(os.urandom(1)[0]) / 3)
+    
