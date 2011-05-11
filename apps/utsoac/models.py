@@ -52,7 +52,7 @@ class Activity(db.Model):
     
         
   def join(self, username, when=datetime.now(), **kwargs):
-    w = Join.weight(when - self.created)
+    w = Join.generate_weight(when - self.created)
     joinRecord = Join(parent=self, key_name=username, weight=w, **kwargs)
     joinRecord.put()
     return joinRecord
@@ -66,7 +66,7 @@ class Activity(db.Model):
     return activity
     
   def get_joins(self):
-    joins = Join.all().ancestor(self).fetch(1000)
+    joins = Join.all().order('weight').ancestor(self).fetch(1000)
     return User.get_by_key_name([x.key().id_or_name() for x in joins])
     
 
@@ -78,7 +78,7 @@ class Join(db.Model):
   gear = db.StringProperty()
   
   @classmethod
-  def weight(self, delta):
+  def generate_weight(self, delta):
     secs = delta.days * 86400 + delta.seconds
     log = math.ceil(math.log(secs / 4.0 / 3600, 2))
     return log * 1000 + (ord(os.urandom(1)[0]) / 3)
